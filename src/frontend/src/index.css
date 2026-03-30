@@ -1,0 +1,81 @@
+@import url("https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600;700;800&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --radius: 0.75rem;
+
+    /* Warm café palette */
+    --background: 0.91 0.025 75; /* #EDE2D0 warm cream */
+    --foreground: 0.18 0.018 50; /* #1E1A16 dark text */
+    --card: 1 0 0; /* #FFFFFF white cards */
+    --card-foreground: 0.18 0.018 50;
+    --popover: 1 0 0;
+    --popover-foreground: 0.18 0.018 50;
+    --primary: 0.27 0.065 42; /* #4B2A1B dark coffee */
+    --primary-foreground: 1 0 0;
+    --secondary: 0.95 0.018 78; /* slightly lighter cream */
+    --secondary-foreground: 0.18 0.018 50;
+    --muted: 0.94 0.016 78;
+    --muted-foreground: 0.48 0.025 55; /* #6E6256 */
+    --accent: 0.67 0.1 75; /* #B79255 gold */
+    --accent-foreground: 1 0 0;
+    --destructive: 0.577 0.245 27.325;
+    --destructive-foreground: 0.985 0 0;
+    --border: 0.88 0.022 76; /* #E7DCCB */
+    --input: 0.88 0.022 76;
+    --ring: 0.67 0.1 75;
+    --chart-1: 0.67 0.1 75;
+    --chart-2: 0.27 0.065 42;
+    --chart-3: 0.48 0.025 55;
+    --chart-4: 0.75 0.12 80;
+    --chart-5: 0.55 0.08 55;
+    --sidebar: 0.22 0.05 40; /* #3A2316 header brown */
+    --sidebar-foreground: 0.95 0.01 80;
+    --sidebar-primary: 0.67 0.1 75;
+    --sidebar-primary-foreground: 0.22 0.05 40;
+    --sidebar-accent: 0.3 0.06 42;
+    --sidebar-accent-foreground: 0.95 0.01 80;
+    --sidebar-border: 0.3 0.05 42;
+    --sidebar-ring: 0.67 0.1 75;
+  }
+
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground font-body;
+    -webkit-font-smoothing: antialiased;
+  }
+}
+
+@layer utilities {
+  .brew-header {
+    background-color: oklch(0.22 0.05 40);
+  }
+  .brew-gold {
+    color: oklch(0.67 0.1 75);
+  }
+  .brew-gold-bg {
+    background-color: oklch(0.67 0.1 75);
+  }
+  .badge-pending {
+    background-color: oklch(0.88 0.08 78);
+    color: oklch(0.4 0.08 60);
+  }
+  .badge-processing {
+    background-color: oklch(0.88 0.01 0);
+    color: oklch(0.4 0.01 0);
+  }
+  .badge-paid {
+    background-color: oklch(0.88 0.1 145);
+    color: oklch(0.35 0.1 145);
+  }
+  .badge-cancelled {
+    background-color: oklch(0.9 0.05 27);
+    color: oklch(0.45 0.15 27);
+  }
+}
