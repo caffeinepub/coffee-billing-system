@@ -36,6 +36,7 @@ import {
   ToggleLeft,
   ToggleRight,
   Trash2,
+  Wand2,
 } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -73,6 +74,41 @@ const EMPTY_ITEM: MenuItem = {
 
 const SKELETON_KEYS = ["a", "b", "c", "d", "e", "f", "g", "h"];
 
+const AUTO_FILL_ITEMS = [
+  {
+    name: "Flat White",
+    description: "Velvety microfoam espresso with a smooth, rich finish",
+    category: "espresso" as Type__1,
+    price: 450,
+  },
+  {
+    name: "Caramel Macchiato",
+    description: "Espresso layered over vanilla milk with caramel drizzle",
+    category: "latte" as Type__1,
+    price: 550,
+  },
+  {
+    name: "Cold Brew Classic",
+    description: "Slow-steeped for 18 hours for a bold, smooth cold brew",
+    category: "coldBrew" as Type__1,
+    price: 500,
+  },
+  {
+    name: "Almond Croissant",
+    description: "Buttery croissant filled with almond frangipane cream",
+    category: "pastries" as Type__1,
+    price: 350,
+  },
+  {
+    name: "Iced Matcha Latte",
+    description: "Ceremonial-grade matcha blended with cold oat milk",
+    category: "latte" as Type__1,
+    price: 600,
+  },
+];
+
+const SAMPLE_PRICES = [350, 450, 500, 550, 600, 650];
+
 export default function MenuPage() {
   const [categoryFilter, setCategoryFilter] = useState("all");
   const [search, setSearch] = useState("");
@@ -95,6 +131,27 @@ export default function MenuPage() {
       !search || item.name.toLowerCase().includes(search.toLowerCase());
     return matchCat && matchSearch;
   });
+
+  const handleAutoFillItem = () => {
+    if (!editItem) return;
+    const pick =
+      AUTO_FILL_ITEMS[Math.floor(Math.random() * AUTO_FILL_ITEMS.length)];
+    const price = BigInt(
+      SAMPLE_PRICES[Math.floor(Math.random() * SAMPLE_PRICES.length)],
+    );
+    setEditItem({
+      ...editItem,
+      item: {
+        ...editItem.item,
+        name: pick.name,
+        description: pick.description,
+        category: pick.category,
+        price,
+        available: true,
+      },
+    });
+    toast.success("Form auto-filled!");
+  };
 
   const handleSave = async () => {
     if (!editItem) return;
@@ -304,9 +361,21 @@ export default function MenuPage() {
       >
         <DialogContent data-ocid="menu.dialog" className="max-w-md">
           <DialogHeader>
-            <DialogTitle>
-              {editItem?.id === null ? "Add New Item" : "Edit Item"}
-            </DialogTitle>
+            <div className="flex items-center justify-between">
+              <DialogTitle>
+                {editItem?.id === null ? "Add New Item" : "Edit Item"}
+              </DialogTitle>
+              <Button
+                data-ocid="menu.autofill_button"
+                variant="ghost"
+                size="sm"
+                className="h-7 px-2 text-xs gap-1.5 text-muted-foreground hover:text-foreground"
+                onClick={handleAutoFillItem}
+              >
+                <Wand2 className="w-3 h-3" />
+                Auto Fill
+              </Button>
+            </div>
           </DialogHeader>
           {editItem && (
             <div className="space-y-4">

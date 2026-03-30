@@ -74,6 +74,7 @@ export interface backendInterface {
     getCallerUserProfile(): Promise<UserProfile | null>;
     getCallerUserRole(): Promise<UserRole>;
     getMenu(): Promise<Array<MenuItem>>;
+    getMenuEntries(): Promise<Array<[bigint, MenuItem]>>;
     getMenuItem(id: bigint): Promise<MenuItem | null>;
     getOrder(orderId: bigint): Promise<OrderType | null>;
     getSalesReport(startTime: bigint, endTime: bigint): Promise<SalesReport>;

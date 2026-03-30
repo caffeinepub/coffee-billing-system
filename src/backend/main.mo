@@ -227,11 +227,8 @@ actor {
     menu.remove(id);
   };
 
-  public shared ({ caller }) func initializeMenuIfEmpty() : async () {
-    if (not (AccessControl.isAdmin(accessControlState, caller))) {
-      Runtime.trap("Unauthorized: Only admins can initialize menu");
-    };
-
+  // Any authenticated user can initialize menu (idempotent - only seeds if empty)
+  public shared func initializeMenuIfEmpty() : async () {
     if (menu.size() == 0) {
       seedMenu();
     };
@@ -240,6 +237,13 @@ actor {
   // Public menu access (no authentication required - guests can view)
   public query func getMenu() : async [MenuItem] {
     menu.values().toArray().sort();
+  };
+
+  // Returns menu entries as (id, item) tuples so frontend can reference item IDs
+  public query func getMenuEntries() : async [(Nat, MenuItem)] {
+    menu.entries().toArray().sort(func(a : (Nat, MenuItem), b : (Nat, MenuItem)) : Order.Order {
+      Nat.compare(a.0, b.0)
+    });
   };
 
   public query func getMenuItem(id : Nat) : async ?MenuItem {

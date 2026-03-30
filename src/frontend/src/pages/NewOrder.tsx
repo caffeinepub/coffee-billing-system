@@ -13,6 +13,7 @@ import {
   Search,
   ShoppingCart,
   Trash2,
+  Wand2,
 } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -39,6 +40,15 @@ const CATEGORY_LABELS: Record<string, string> = {
   coldBrew: "Cold Brew",
   pastries: "Pastries",
 };
+
+const SAMPLE_NAMES = [
+  "Alice Johnson",
+  "Bob Martinez",
+  "Carol Lee",
+  "David Kim",
+  "Emma Wilson",
+];
+const SAMPLE_DISCOUNTS = [0, 5, 10, 15];
 
 interface CartItem {
   id: bigint;
@@ -86,6 +96,31 @@ export default function NewOrderPage() {
         .map((c) => (c.id === id ? { ...c, quantity: c.quantity + delta } : c))
         .filter((c) => c.quantity > 0),
     );
+  };
+
+  const handleAutoFill = () => {
+    const randomName =
+      SAMPLE_NAMES[Math.floor(Math.random() * SAMPLE_NAMES.length)];
+    const randomTable = String(Math.floor(Math.random() * 10) + 1);
+    const randomDiscount = String(
+      SAMPLE_DISCOUNTS[Math.floor(Math.random() * SAMPLE_DISCOUNTS.length)],
+    );
+
+    setCustomerName(randomName);
+    setTableNumber(randomTable);
+    setDiscount(randomDiscount);
+
+    if (menu.length > 0) {
+      const shuffled = [...menu].sort(() => Math.random() - 0.5);
+      const count = Math.floor(Math.random() * 2) + 2; // 2-3
+      const picks = shuffled.slice(0, Math.min(count, shuffled.length));
+      setCart([]);
+      for (const [id, item] of picks) {
+        addToCart(id, item);
+      }
+    }
+
+    toast.success("Order auto-filled with sample data!");
   };
 
   const subtotal = cart.reduce(
@@ -264,33 +299,50 @@ export default function NewOrderPage() {
           </CardHeader>
           <CardContent className="p-4 pt-0 space-y-4">
             {/* Customer info */}
-            <div className="grid grid-cols-2 gap-2">
-              <div className="space-y-1">
-                <Label htmlFor="cust-name" className="text-xs">
-                  Customer Name
-                </Label>
-                <Input
-                  id="cust-name"
-                  data-ocid="order.input"
-                  placeholder="John Doe"
-                  value={customerName}
-                  onChange={(e) => setCustomerName(e.target.value)}
-                  className="h-8 text-sm bg-secondary border-border"
-                />
+            <div className="space-y-2">
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-medium text-muted-foreground">
+                  Customer Details
+                </span>
+                <Button
+                  data-ocid="order.autofill_button"
+                  variant="ghost"
+                  size="sm"
+                  className="h-7 px-2 text-xs gap-1.5 text-muted-foreground hover:text-foreground"
+                  onClick={handleAutoFill}
+                >
+                  <Wand2 className="w-3 h-3" />
+                  Auto Fill
+                </Button>
               </div>
-              <div className="space-y-1">
-                <Label htmlFor="table-no" className="text-xs">
-                  Table #
-                </Label>
-                <Input
-                  id="table-no"
-                  type="number"
-                  min="1"
-                  placeholder="1"
-                  value={tableNumber}
-                  onChange={(e) => setTableNumber(e.target.value)}
-                  className="h-8 text-sm bg-secondary border-border"
-                />
+              <div className="grid grid-cols-2 gap-2">
+                <div className="space-y-1">
+                  <Label htmlFor="cust-name" className="text-xs">
+                    Customer Name
+                  </Label>
+                  <Input
+                    id="cust-name"
+                    data-ocid="order.input"
+                    placeholder="John Doe"
+                    value={customerName}
+                    onChange={(e) => setCustomerName(e.target.value)}
+                    className="h-8 text-sm bg-secondary border-border"
+                  />
+                </div>
+                <div className="space-y-1">
+                  <Label htmlFor="table-no" className="text-xs">
+                    Table #
+                  </Label>
+                  <Input
+                    id="table-no"
+                    type="number"
+                    min="1"
+                    placeholder="1"
+                    value={tableNumber}
+                    onChange={(e) => setTableNumber(e.target.value)}
+                    className="h-8 text-sm bg-secondary border-border"
+                  />
+                </div>
               </div>
             </div>
 

@@ -10,8 +10,8 @@ export function useMenu() {
     queryKey: ["menu"],
     queryFn: async () => {
       if (!actor) return [];
-      const result = await actor.getMenu();
-      return result as unknown as MenuEntry[];
+      const result = await actor.getMenuEntries();
+      return result as MenuEntry[];
     },
     enabled: !!actor && !isFetching,
   });

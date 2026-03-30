@@ -66,6 +66,7 @@ export interface _SERVICE {
   'getCallerUserProfile' : ActorMethod<[], [] | [UserProfile]>,
   'getCallerUserRole' : ActorMethod<[], UserRole>,
   'getMenu' : ActorMethod<[], Array<MenuItem>>,
+  'getMenuEntries' : ActorMethod<[], Array<[bigint, MenuItem]>>,
   'getMenuItem' : ActorMethod<[bigint], [] | [MenuItem]>,
   'getOrder' : ActorMethod<[bigint], [] | [OrderType]>,
   'getSalesReport' : ActorMethod<[bigint, bigint], SalesReport>,

@@ -157,6 +157,7 @@ export interface backendInterface {
     getCallerUserProfile(): Promise<UserProfile | null>;
     getCallerUserRole(): Promise<UserRole>;
     getMenu(): Promise<Array<MenuItem>>;
+    getMenuEntries(): Promise<Array<[bigint, MenuItem]>>;
     getMenuItem(id: bigint): Promise<MenuItem | null>;
     getOrder(orderId: bigint): Promise<OrderType | null>;
     getSalesReport(startTime: bigint, endTime: bigint): Promise<SalesReport>;
@@ -336,6 +337,20 @@ export class Backend implements backendInterface {
         } else {
             const result = await this.actor.getMenu();
             return from_candid_vec_n16(this._uploadFile, this._downloadFile, result);
+        }
+    }
+    async getMenuEntries(): Promise<Array<[bigint, MenuItem]>> {
+        if (this.processError) {
+            try {
+                const result = await this.actor.getMenuEntries();
+                return result.map(([id, item]) => [id, from_candid_MenuItem_n17(this._uploadFile, this._downloadFile, item)]);
+            } catch (e) {
+                this.processError(e);
+                throw new Error("unreachable");
+            }
+        } else {
+            const result = await this.actor.getMenuEntries();
+            return result.map(([id, item]) => [id, from_candid_MenuItem_n17(this._uploadFile, this._downloadFile, item)]);
         }
     }
     async getMenuItem(arg0: bigint): Promise<MenuItem | null> {
