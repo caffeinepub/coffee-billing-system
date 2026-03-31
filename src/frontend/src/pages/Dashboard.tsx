@@ -12,7 +12,7 @@ import {
   ShoppingBag,
   TrendingUp,
 } from "lucide-react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import type { Page } from "../App";
 import type { OrderType } from "../backend.d";
 import BillModal from "../components/BillModal";
@@ -43,9 +43,12 @@ export default function Dashboard({ onNavigate }: DashboardProps) {
   const [billOrderId, setBillOrderId] = useState<bigint | null>(null);
   const [billOrder, setBillOrder] = useState<OrderType | null>(null);
 
-  const now = BigInt(Date.now()) * BigInt(1_000_000);
-  const startOfDay =
-    BigInt(new Date().setHours(0, 0, 0, 0)) * BigInt(1_000_000);
+  const { startOfDay, now } = useMemo(() => {
+    const n = BigInt(Date.now()) * BigInt(1_000_000);
+    const s = BigInt(new Date().setHours(0, 0, 0, 0)) * BigInt(1_000_000);
+    return { now: n, startOfDay: s };
+  }, []);
+
   const { data: orders = [] } = useOrders();
   const { data: report } = useSalesReport(startOfDay, now);
   const { data: menu = [] } = useMenu();

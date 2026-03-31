@@ -39,6 +39,7 @@ export function useSalesReport(startTime: bigint, endTime: bigint) {
       return actor.getSalesReport(startTime, endTime);
     },
     enabled: !!actor && !isFetching,
+    refetchInterval: 10000,
   });
 }
 
